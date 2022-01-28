@@ -1,0 +1,44 @@
+int i = 0;
+            
+            if (dgv.RowCount == 1)
+            {
+                return;
+            }
+
+            // Nếu có một hàng đang được chọn
+            if (indexRowDangClickTrongDGV != -1 && dgv.SelectedRows.Count == 1)
+            {
+                i = indexRowDangClickTrongDGV;
+            }
+            // Nếu có một hàng đang được focus nhưng chuột không click vào datagridview
+            else if (dgv.SelectedRows.Count > 0)
+            {
+                i = dgv.CurrentRow.Index;             
+            }
+            try
+            {
+                int soLuongHienTai = int.Parse(dgv.Rows[i].Cells[1].Value.ToString());
+                double gia = double.Parse(dgv.Rows[i].Cells[2].Value.ToString());
+
+                if (soLuongHienTai > 1)
+                {
+                    // Xóa bớt số lượng đi 1
+                    dgv.Rows[i].Cells[1].Value = soLuongHienTai - 1;
+                    // Giảm bớt thành tiền
+                    double thanh_tien = double.Parse(dgv.Rows[i].Cells[3].Value.ToString());
+                    dgv.Rows[i].Cells[3].Value = thanh_tien - gia;
+                    // Giảm tiền hàng
+                    tienHang = tienHang - gia;
+                    txt_tienHang.Text = (tienHang - gia).ToString("N0");
+                }
+                else if (soLuongHienTai == 1)
+                {
+                    tienHang = 0;
+                    txt_tienHang.Text = tienHang.ToString("N0");
+                    dgv.Rows.Remove(dgv.Rows[i]);
+                }
+            }
+            catch
+            {
+                ;
+            }
